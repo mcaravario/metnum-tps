@@ -1,0 +1,174 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+%\usepackage[ruled,vlined]{algorithm2e}
+
+\parskip = 11pt
+
+\newcommand{\real}{\mathbb{R}}
+
+\begin{document}
+
+
+\begin{centering}
+\large\bf Laboratorio de M\'etodos Num\'ericos - Primer Cuatrimestre 2014 \\
+\large\bf Trabajo Pr\'actico N\'umero 2: Tu cara me suena\\
+\end{centering}
+
+
+\vskip 0.5 cm
+\hrule
+\vskip 0.1 cm
+
+{\bf\noindent Introducci\'on}
+
+A menos de cincuenta d\'ias del inicio de la gran fiesta del f\'utbol mundial, el Equipo de Desarrollos de M\'etodos
+Num\'ericos ha recibido un pedido reciente por parte del Comite de Seguridad de la
+Organizaci\'on del Mundial Brasil 2014. Informaciones de \'ultimo momento aseguran que una gran cantidad de
+\emph{barras} se est\'an organizando para \emph{copar} las tribunas de los (a\'un no terminados) estadios del pa\'is
+organizador. Debido al retraso en la implementaci\'on del sistema FIFA Plus por cuestiones t\'ecnicas, el evento ser\'a
+cancelado a menos que nuestro equipo logre desarrollar un software de reconocimiento facial efectivo en los pr\'oximos
+20 d\'ias.
+
+El Comit\'e Organizador ha puesto a nuestra disposici\'on todos sus recursos a fin de evitar lo que ser\'ia la mayor verg\"uenza
+en la historia de la entidad. Entre otras cosas, se dispone de una base de datos de fotograf\'ias digitalizada de todas
+aquellas personas que alguna vez hayan ingresado a alg\'un estadio de f\'utbol en alg\'un pa\'is del planeta. El
+objetivo del trabajo es desarrollar un software que, tomando esta informaci\'on como entrenamiento, pueda detectar en
+tiempo real si los asistentes a alguno de los partidos corresponde a un \emph{barra}.
+
+
+Como instancias de entrenamiento, se tiene un conjunto de $N$ personas, cada una de ellas con $M$ im\'agenes
+(eventualmente) distintas sus rostros en escala de grises del mismo tama\~no y resoluci\'on. Cada una de estas
+im\'agenes sabemos a qu\'e persona corresponde.
+
+Para $i = 1,\ldots, n$, sea $x_i \in \real^{m}$ la $i$-\'esima imagen de nuestra base de datos almacenada por filas en
+un vector, y sea $\mu = (x_1 + \ldots + x_n)/n$ el promedio de las im\'agenes. Definimos $X\in\real^{n\times m}$ como la
+matriz que contiene en la $i$-\'esima fila al vector $(x_i - \mu)^{t}/\sqrt{n-1}$, y $$A=U \Sigma V^t$$ a su descomposici\'on en valores singulares, con $U\in\real^{n\times n}$ y $V\in\real^{m\times m}$ matrices ortogonales, y $\Sigma\in\real^{n\times m}$ la matriz diagonal conteniendo en la posici\'on $(i,i)$ al $i$-\'esimo valor singular $\sigma_i$.
+Siendo $v_i$ la columna $i$ de $V$, definimos para $i = 1,\ldots,n$ la \textsl{transformaci\'on caracter\'istica} del d\'igito $x_{i}$ como el vector $\mathbf{tc}(x_i) = (v_1^t\, x_i, v_2^t\, x_i,\ldots,v_k^t\, x_i) \in\real^k$, donde $k \in\{1,\ldots,m\}$ es un par\'ametro de la implementaci\'on. Este proceso corresponde a extraer las $k$ primeras \textit{componentes principales} de cada imagen. La intenci\'on es que $\mathbf{tc}(x_i)$ resuma la informaci\'on m\'as relevante de la imagen, descartando los detalles o las zonas que no aportan rasgos distintivos.
+
+Dada una nueva imagen $x$ de una cara, que no se encuentra en el conjunto inicial de im\'agenes de entrenamiento, el
+problema de reconocimiento consiste en determinar a qu\'e persona de la base de datos corresponde. Para esto, se calcula
+$\mathbf{tc}(x)$ y se compara con $\mathbf{tc}(x_i)$, para $i = 1,\ldots, n$, utilizando un criterio de selecci\'on
+adecuado.
+
+
+{\bf\noindent Enunciado}
+
+Se pide implementar un programa en \verb+C+ o \verb-C++- que lea desde archivos las im\'agenes de entrenamiento correspondientes a distintas
+personas y que, utilizando la descomposici\'on en valores singulares y el n\'umero de componentes principales $k$
+mencionado anteriormente, calcule la transformaci\'on caracter\'istica de acuerdo con la descripci\'on anterior. Se debe
+proponer e implementar al menos un m\'etodo que, dada una nueva imagen de una cara, determine a que persona de la base
+de datos corresponde utilizando la transformaci\'on caracter\'istica.
+
+Con el objetivo de obtener la descomposici\'on en valores singulares, se deber\'a implementar el m\'etodo de la potencia
+con deflaci\'on para la estimaci\'on de autovalores/autovectores. En este contexto, la factibilidad de aplicar este
+m\'etodo es particularmente sensible al tama\~no de las im\'agenes de la base de datos. Por ejemplo, considerar im\'agenes
+en escala de grises de $100 \times 100$ p\'ixeles implicar\'ia trabajar con matrices de tama\~no $10000 \times
+10000$. Una alternativa es reducir el tama\~no de las im\'agenes, por ejemplo, mediante un submuestreo. 
+Sin embargo, es posible superar esta dificultad en los casos donde el n\'umero de muestras es menor que el
+n\'umero de variables. Se pide desarrollar las siguientes sugerencias y fundamentar como utilizarlas en el contexto del
+trabajo.
+
+\begin{itemize}
+\item Dada una matriz y su descomposici\'on en valores singulares $A = U \Sigma V^t$, encontrar la descomposici\'on en
+valores singulares de $A^t$. C\'omo se relacionan los valores singulares de $A$ y $A^t$?
+\item Dada la descomposici\'on en valores singulares de $A$, expresar en funci\'on de $U$, $\Sigma$ y $V$ las matrices
+$A^t$, $A^tA$ y $AA^t$. Analizar el tama\~no de cada una de ellas y deducir como relacionar las respectivas componentes
+principales.
+Combinar con el item anterior para el c\'omputo de los componentes principales.
+\end{itemize}
+
+En base a este an\'alisis, se pide desarrollar una herramienta alternativa que permita trabajar bajo ciertas condiciones
+con im\'agenes de tama\~no mediano/grande.
+
+Junto con este enunciado se provee una base de datos de im\'agenes correspondiente a 41 personas, con 10
+im\'agenes por cada una de ellas. Esta base de datos se encuentra disponible en dos resoluciones distintas: $92 \times
+112$ y $23 \times 28$ p\'ixeles por cada imagen. La segunda corresponde a un submuestreo de la base original.
+En relaci\'on a la experimentaci\'on, se pide como m\'inimo realizar los siguientes experimentos:
+\begin{itemize}
+\item Analizar para cada una de las variantes qu\'e versi\'on de la base de datos es posible utilizar, en base a
+requerimientos de memoria y tiempo de c\'omputo.
+
+\item Para cada una de las variantes propuestas, analizar el impacto en la tasa de efectividad del algoritmo de reconocimiento al
+variar la cantidad de componentes principales considerados. Estudiar tambi\'en como impacta la cantidad de im\'agenes
+consideradas para cada persona en la etapa de entrenamiento.
+
+\item En caso de considerar m\'as de una posibilidad para determinar a que persona corresponde una nueva cara,
+considerar para cada una la mejor configuraci\'on de par\'ametros y compararlas entre ellas.
+\end{itemize}
+
+El objetivo final de la experimentaci\'on es proponer una configuraci\'on de par\'armetros/m\'etodos que obtenga
+resultados un buen balance entre la tasa de efectividad de reconocimiento de caras, la factibilidad de la propuesta y el
+tiempo de c\'omputo requerido.
+
+{\bf Programa y formato de archivos}
+
+Se deber\'an entregar los archivos fuentes que contengan la resoluci\'on del trabajo pr\'actico. El ejecutable tomar\'a
+tres par\'ametros por l\'inea de comando, que ser\'an el archivo de entrada, el archivo de salida, y el m\'etodo a
+ejectutar (0 m\'etodo est\'andar, 1 m\'etodo alternativo).
+
+
+Asumimos que la base de datos de im\'agenes se encuentra organizada de la siguiente forma: partiendo de un directorio
+ra\'iz, contiene un subdirectorio por cada una de las personas donde se encuentran las im\'agenes de entrenamiento. El
+nombre de las im\'agenes ser\'a un n\'umero y su extensi\'on una archivo \verb+.pgm+ (ejemplo: \verb+1.pgm+,
+\verb+2.pgm+, etc.). De esta forma se puede saber a que persona corresponde cada imagen simulando un etiquetado de las
+mismas. 
+
+Para facilitar la experimentaci\'on, el archivo de entrada con la descripci\'on del experimento sigue la siguiente
+estructura:
+\begin{itemize}
+\item La primera l\'inea contendr\'a el \emph{path} al directorio que contiene la base de datos, seguido de 5 n\'umeros
+enteros que representan la cantidad de filas y columnas de las im\'agenes de la base, cuantas personas ($p$) y cuantas
+im\'agenes por cada una de ellas ($nimgp$), y cu\'antas componentes principales se utilizar\'an en el experimento ($k$). 
+A continuaci\'on de muestra un ejemplo de una base de datos de im\'agenes de $112 \times 92$, con 41 sujetos, 5 
+im\'agenes por sujeto y tomando 15 componentes principales.
+
+\begin{verbatim}
+../data/ImagenesCaras/ 112 92 41 5 15
+\end{verbatim}
+
+\item A continuaci\'on, el archivo contendr\'a $p$ l\'ineas donde en cada una de ellas se especificar\'a la carpeta
+correspondiente a la p-\'esima persona, seguido de $nimgp$ numeros enteros indicando las im\'agenes a considerar para el
+entrenamiento. La siguiente l\'inea muestra como ejemplo 5 im\'agenes (2, 4, 7, 8 y 10) a considerar para la persona
+\verb+s10+.
+
+\begin{verbatim}
+s10/ 2 4 7 8 10
+\end{verbatim}
+
+\item Finalmente, se especificar\'a un n\'umero $ntest$ de im\'agenes (preferentemente no contenidas en la base de
+im\'agenes) para las cuales se desea identificar a quien pertenecen. Cada una de ellas se especificar\'a en una nueva
+l\'inea, indicando el \emph{path} al archivo seguido del n\'umero de individuo al que pertenece (relativo a la
+numeraci\'on establecida en el punto anterior). La siguiente l\'inea muestra un ejempo de una imagen a testear para el
+sujeto n\'umero 1:
+
+\begin{verbatim}
+../data/ImagenesCaras/s1/9.pgm 1
+\end{verbatim}
+\end{itemize}
+
+El archivo de salida obligatorio tendr\'a el vector soluci\'on con los $k$ valores singulares de mayor magnitud, con una
+componente del mismo por l\'inea. Adicionalmente, en caso de considerarlo conveniente, se podr\'an agregar archivos
+adicionales opcionales con m\'as informaci\'on que la descripta en la presente secci\'on.
+
+Junto con el presente enunciado, se adjunta una serie de scripts hechos en \verb+python+ y un conjunto instancias de
+test que deber\'an ser utilizados para la compilaci\'on y un testeo b\'asico de la implementaci\'on. Se recomienda leer
+el archivo \verb+README.txt+ con el detalle sobre su utilizaci\'on.
+
+
+\vskip 0.5 cm
+\hrule
+\vskip 0.1 cm
+
+{\bf Fecha de entrega} 
+\begin{itemize}
+\item \textsl{Formato electr\'onico:} Jueves 15 de Mayo de 2014, \underline{hasta las 23:59 hs.}, enviando el trabajo
+(informe+c\'odigo) a \texttt{metnum.lab@gmail.com}. El subject del email debe comenzar con el texto \verb|[TP2]| seguido
+de la lista de apellidos de los integrantes del grupo. 
+\item \textsl{Formato f\'isico:} Viernes 16 de Mayo de 2014, de 17:30 a 18:00 hs.
+\end{itemize}
+
+
+\end{document}

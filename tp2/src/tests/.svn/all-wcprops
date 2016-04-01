@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/pedrito3110-tp2metodos/!svn/ver/25/tp2/src/tests
+END
+testFullRed.expected
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pedrito3110-tp2metodos/!svn/ver/1/tp2/src/tests/testFullRed.expected
+END
+testRed.in
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/pedrito3110-tp2metodos/!svn/ver/25/tp2/src/tests/testRed.in
+END
+testBig.expected
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/pedrito3110-tp2metodos/!svn/ver/1/tp2/src/tests/testBig.expected
+END
+testRed2.in
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/pedrito3110-tp2metodos/!svn/ver/19/tp2/src/tests/testRed2.in
+END
+testFullRed.in
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/pedrito3110-tp2metodos/!svn/ver/25/tp2/src/tests/testFullRed.in
+END
+testRed3.in
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/pedrito3110-tp2metodos/!svn/ver/19/tp2/src/tests/testRed3.in
+END
+testFullBig.expected
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pedrito3110-tp2metodos/!svn/ver/1/tp2/src/tests/testFullBig.expected
+END
+testBig.in
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/pedrito3110-tp2metodos/!svn/ver/25/tp2/src/tests/testBig.in
+END
+testFullBig.in
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/pedrito3110-tp2metodos/!svn/ver/25/tp2/src/tests/testFullBig.in
+END
+testRed.expected
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/pedrito3110-tp2metodos/!svn/ver/1/tp2/src/tests/testRed.expected
+END
