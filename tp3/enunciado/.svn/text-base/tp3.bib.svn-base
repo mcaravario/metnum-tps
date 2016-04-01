@@ -1,0 +1,13 @@
+@Manual{BoostSite, 
+  title =        {BOOST C++ Libraries}, 
+  note =         {\texttt{http://www.boost.org}}, 
+  url =          {http://www.boost.org} 
+} 
+
+@book{asimov,
+  title={I, Robot},
+  author={Asimov, I.},
+  isbn={978-84-350-3482-1},
+  year={1950},
+  publisher={Doubleday}
+}
